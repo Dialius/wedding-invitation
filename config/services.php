@@ -28,6 +28,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'waha' => [
+        'base_url' => env('WAHA_BASE_URL'),
+        'session' => env('WAHA_SESSION_NAME', 'default'),
+        'api_key' => env('WAHA_API_KEY'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
