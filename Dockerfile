@@ -48,4 +48,4 @@ EXPOSE 8000
 # Start command (sesuaikan dengan kebutuhan)
 CMD php artisan migrate --force
     
-    && php artisan storage:link
+    
