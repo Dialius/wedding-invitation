@@ -1,33 +1,17 @@
 [phases.setup]
-nixPkgs = ['php82', 'php82Packages.composer', 'nodejs_18']
+nixPkgs = ['php83', 'php83Extensions.gd', 'php83Extensions.mbstring', 'php83Extensions.pdo', 'php83Extensions.pdo_mysql']
 
 [phases.install]
-cmds = ['composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader']
+cmds = ['composer install --no-dev --optimize-autoloader']
+```
 
-[phases.build]
-cmds = [
-    'npm ci',
-    'npm run build',
-    'php artisan config:clear',
-    'php artisan route:clear',
-    'php artisan view:clear'
-]
+Atau jika Anda menggunakan environment variable, set di Railway dashboard:
+- `NIXPACKS_PHP_VERSION=8.3`
 
-[start]
-cmd = '''
-echo "Waiting for MySQL to be ready..."
-for i in {1..30}; do
-    if php artisan db:show 2>/dev/null; then
-        echo "MySQL is ready!"
-        break
-    fi
-    echo "Waiting for MySQL... ($i/30)"
-    sleep 2
-done
+### 2. **Install Extension GD**
 
-echo "Running migrations..."
-php artisan migrate --force
+Jika menggunakan `nixpacks.toml`, pastikan sudah ada `php83Extensions.gd` seperti contoh di atas.
 
-echo "Starting web server..."
-php artisan serve --host=0.0.0.0 --port=$PORT
-'''
+Jika tidak menggunakan nixpacks.toml, tambahkan di Railway settings → Variables:
+```
+NIXPACKS_PKGS=php83Extensions.gd
