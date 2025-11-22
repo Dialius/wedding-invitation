@@ -1,17 +1,18 @@
 [phases.setup]
-nixPkgs = ['php83', 'php83Extensions.gd', 'php83Extensions.mbstring', 'php83Extensions.pdo', 'php83Extensions.pdo_mysql']
+nixPkgs = [
+  "php83",
+  "php83Extensions.gd",
+  "php83Extensions.curl",
+  "php83Extensions.mbstring",
+  "php83Extensions.pdo",
+  "php83Extensions.pdo_mysql",
+  "php83Extensions.zip"
+]
 
 [phases.install]
-cmds = ['composer install --no-dev --optimize-autoloader']
-```
+cmds = [
+  "composer install --no-dev --optimize-autoloader"
+]
 
-Atau jika Anda menggunakan environment variable, set di Railway dashboard:
-- `NIXPACKS_PHP_VERSION=8.3`
-
-### 2. **Install Extension GD**
-
-Jika menggunakan `nixpacks.toml`, pastikan sudah ada `php83Extensions.gd` seperti contoh di atas.
-
-Jika tidak menggunakan nixpacks.toml, tambahkan di Railway settings → Variables:
-```
-NIXPACKS_PKGS=php83Extensions.gd
+[start]
+cmd = "php artisan serve --host=0.0.0.0 --port=8000"

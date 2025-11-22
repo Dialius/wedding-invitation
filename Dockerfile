@@ -10,14 +10,15 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libfreetype6-dev \
-    libjpeg62-turbo-dev
+    libjpeg62-turbo-dev \
+    libzip-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -34,18 +35,15 @@ RUN composer install --optimize-autoloader --no-dev --no-scripts
 # Copy application files
 COPY . .
 
-# Run composer scripts (if any)
+# Build autoload
 RUN composer dump-autoload --optimize
 
-# Set permissions (optional, sesuaikan dengan kebutuhan Laravel)
-RUN chown -R www-data:www-data /app \
-    && chmod -R 755 /app/storage \
-    && chmod -R 755 /app/bootstrap/cache
+# Set permissions for Laravel
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-# Expose port
+# Expose port for Railway
 EXPOSE 8000
 
-# Start command (sesuaikan dengan kebutuhan)
-CMD php artisan migrate --force
-    
-    
+# Start server
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
