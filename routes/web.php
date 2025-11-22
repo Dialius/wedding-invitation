@@ -9,6 +9,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/rsvp', [RsvpController::class, 'index'])->name('rsvp.index');
 Route::post('/rsvp', [RsvpController::class, 'store'])->name('rsvp.store');
 
+Route::get('/test-email', function () {
+    try {
+        Mail::raw('Ini adalah test email dari Laravel!', function ($message) {
+            $message->to('davinza30@gmail.com')  // ← Ganti dengan email tujuan
+                    ->subject('Test Email Laravel');
+        });
+        
+        return 'Email berhasil dikirim! Cek inbox Anda.';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
+
 // Halaman Dashboard (contoh)
 Route::get('/dashboard', function () {
     return view('dashboard');
