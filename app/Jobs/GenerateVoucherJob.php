@@ -120,6 +120,9 @@ class GenerateVoucherJob implements ShouldQueue
 
     protected function sendWhatsApp(Guest $guest, string $qrCodeBase64)
     {
+        Log::info("WhatsApp notifikasi di-skip (WAHA belum di-setup)");
+        return; // <-- Tambahkan ini
+        
         $baseUrl = config('services.waha.base_url');
         $session = config('services.waha.session');
         $apiKey = config('services.waha.api_key');
